@@ -1,50 +1,66 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3001;
-const dataService = require('../escola-fenix-backend/dataService.js');
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
 
+const backendUrl = 'https://escola-fenix-backend-f552677f1c3c.herokuapp.com';
+
 app.get('/alunos', (req, res) => {
-  dataService.getAllAlunos((err, alunos) => {
-    if (err) {
-      return res.status(500).send('Erro ao buscar alunos');
-    }
-    res.json(alunos);
-  });
+  fetch(`${backendUrl}/alunos`)
+    .then(response => response.json())
+    .then(data => res.json(data))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao buscar alunos');
+    });
 });
 
 app.post('/alunos', (req, res) => {
   const aluno = req.body;
-  dataService.addAluno(aluno, (err) => {
-    if (err) {
-      return res.status(500).send('Erro ao adicionar aluno');
-    }
-    res.send('Aluno adicionado');
-  });
+  fetch(`${backendUrl}/alunos`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(aluno)
+  })
+    .then(() => res.send('Aluno adicionado'))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao adicionar aluno');
+    });
 });
 
 app.put('/alunos/:id', (req, res) => {
   const id = req.params.id;
   const aluno = req.body;
-  dataService.updateAluno(id, aluno, (err) => {
-    if (err) {
-      return res.status(500).send('Erro ao atualizar aluno');
-    }
-    res.send('Aluno atualizado');
-  });
+  fetch(`${backendUrl}/alunos/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(aluno)
+  })
+    .then(() => res.send('Aluno atualizado'))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao atualizar aluno');
+    });
 });
 
 app.delete('/alunos/:id', (req, res) => {
   const id = req.params.id;
-  dataService.removeAluno(id, (err) => {
-    if (err) {
-      return res.status(500).send('Erro ao remover aluno');
-    }
-    res.send('Aluno removido');
-  });
+  fetch(`${backendUrl}/alunos/${id}`, {
+    method: 'DELETE'
+  })
+    .then(() => res.send('Aluno removido'))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao remover aluno');
+    });
 });
 
 app.listen(port, () => {
