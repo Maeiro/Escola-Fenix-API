@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
+const axios = require('axios');
 
 app.use(cors());
 app.use(express.json());
@@ -13,9 +14,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/alunos', (req, res) => {
-  fetch(`${backendUrl}/alunos`)
-    .then(response => response.json())
-    .then(data => res.json(data))
+  axios.get(`${backendUrl}/alunos`)
+    .then(response => res.json(response.data))
     .catch(err => {
       console.error(err);
       res.status(500).send('Erro ao buscar alunos');
@@ -24,13 +24,7 @@ app.get('/alunos', (req, res) => {
 
 app.post('/alunos', (req, res) => {
   const aluno = req.body;
-  fetch(`${backendUrl}/alunos`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(aluno)
-  })
+  axios.post(`${backendUrl}/alunos`, aluno)
     .then(() => res.send('Aluno adicionado'))
     .catch(err => {
       console.error(err);
@@ -41,13 +35,7 @@ app.post('/alunos', (req, res) => {
 app.put('/alunos/:id', (req, res) => {
   const id = req.params.id;
   const aluno = req.body;
-  fetch(`${backendUrl}/alunos/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(aluno)
-  })
+  axios.put(`${backendUrl}/alunos/${id}`, aluno)
     .then(() => res.send('Aluno atualizado'))
     .catch(err => {
       console.error(err);
@@ -57,9 +45,7 @@ app.put('/alunos/:id', (req, res) => {
 
 app.delete('/alunos/:id', (req, res) => {
   const id = req.params.id;
-  fetch(`${backendUrl}/alunos/${id}`, {
-    method: 'DELETE'
-  })
+  axios.delete(`${backendUrl}/alunos/${id}`)
     .then(() => res.send('Aluno removido'))
     .catch(err => {
       console.error(err);
