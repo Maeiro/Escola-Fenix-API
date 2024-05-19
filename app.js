@@ -64,6 +64,15 @@ app.post('/presencas', (req, res) => {
     });
 });
 
+app.get('/faltas', (req, res) => {
+  axios.get(`${backendUrl}/faltas`)
+    .then(response => res.json(response.data))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao buscar faltas');
+    });
+});
+
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
