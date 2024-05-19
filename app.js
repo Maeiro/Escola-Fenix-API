@@ -53,6 +53,17 @@ app.delete('/alunos/:id', (req, res) => {
     });
 });
 
+// Rota para registrar a presença de um aluno
+app.post('/presencas', (req, res) => {
+  const { alunoId, data, presente } = req.body;
+  axios.post(`${backendUrl}/presencas`, { alunoId, data, presente })
+    .then(() => res.send('Presença registrada'))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao registrar presença');
+    });
+});
+
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
