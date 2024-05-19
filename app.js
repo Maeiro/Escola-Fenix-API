@@ -8,6 +8,10 @@ app.use(express.json());
 
 const backendUrl = 'https://escola-fenix-backend-f552677f1c3c.herokuapp.com';
 
+app.get('/', (req, res) => {
+  res.send('API funcionando!');
+});
+
 app.get('/alunos', (req, res) => {
   fetch(`${backendUrl}/alunos`)
     .then(response => response.json())
