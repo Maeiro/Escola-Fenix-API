@@ -9,10 +9,12 @@ app.use(express.json());
 
 const backendUrl = 'https://escola-fenix-backend-f552677f1c3c.herokuapp.com';
 
+// Rota para verificar se a API está funcionando
 app.get('/', (req, res) => {
   res.send('API funcionando!');
 });
 
+// Rota para buscar todos os alunos
 app.get('/alunos', (req, res) => {
   axios.get(`${backendUrl}/alunos`)
     .then(response => res.json(response.data))
@@ -22,6 +24,7 @@ app.get('/alunos', (req, res) => {
     });
 });
 
+// Rota para adicionar um novo aluno
 app.post('/alunos', (req, res) => {
   const aluno = req.body;
   axios.post(`${backendUrl}/alunos`, aluno)
@@ -32,6 +35,7 @@ app.post('/alunos', (req, res) => {
     });
 });
 
+// Rota para atualizar um aluno existente
 app.put('/alunos/:id', (req, res) => {
   const id = req.params.id;
   const aluno = req.body;
@@ -43,6 +47,7 @@ app.put('/alunos/:id', (req, res) => {
     });
 });
 
+// Rota para remover um aluno
 app.delete('/alunos/:id', (req, res) => {
   const id = req.params.id;
   axios.delete(`${backendUrl}/alunos/${id}`)
@@ -85,6 +90,7 @@ app.get('/filterPresencas', (req, res) => {
     });
 });
 
+// Rota para buscar alunos filtrados
 app.get('/filterAlunos', (req, res) => {
   const filters = req.query;
   axios.get(`${backendUrl}/filterAlunos`, { params: filters })
