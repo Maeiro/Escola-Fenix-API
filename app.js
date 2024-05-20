@@ -81,7 +81,17 @@ app.get('/filterPresencas', (req, res) => {
     .then(response => res.json(response.data))
     .catch(err => {
       console.error(err);
-      res.status(500).send('Erro ao buscar relatórios');
+      res.status(500).send('Erro ao filtrar presenças');
+    });
+});
+
+app.get('/filterAlunos', (req, res) => {
+  const filters = req.query;
+  axios.get(`${backendUrl}/filterAlunos`, { params: filters })
+    .then(response => res.json(response.data))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao filtrar alunos');
     });
 });
 
