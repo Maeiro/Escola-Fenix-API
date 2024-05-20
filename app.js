@@ -1,3 +1,5 @@
+// app.js
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -92,6 +94,17 @@ app.get('/filterAlunos', (req, res) => {
     .catch(err => {
       console.error(err);
       res.status(500).send('Erro ao filtrar alunos');
+    });
+});
+
+// Rota para remover uma presença
+app.delete('/presencas/:id', (req, res) => {
+  const id = req.params.id;
+  axios.delete(`${backendUrl}/presencas/${id}`)
+    .then(() => res.send('Presença removida'))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao remover presença');
     });
 });
 
