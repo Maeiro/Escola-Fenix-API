@@ -54,9 +54,9 @@ app.delete('/alunos/:id', (req, res) => {
 });
 
 // Rota para registrar a presença de um aluno
-app.post('/presencas', (req, res) => {
+app.post('/registroPresenca', (req, res) => {
   const { alunoId, data, presente } = req.body;
-  axios.post(`${backendUrl}/presencas`, { alunoId, data, presente })
+  axios.post(`${backendUrl}/registroPresenca`, { alunoId, data, presente })
     .then(() => res.send('Presença registrada'))
     .catch(err => {
       console.error(err);
@@ -64,12 +64,24 @@ app.post('/presencas', (req, res) => {
     });
 });
 
-app.get('/faltas', (req, res) => {
-  axios.get(`${backendUrl}/faltas`)
+// Rota para buscar presenças dos alunos
+app.get('/presencas', (req, res) => {
+  axios.get(`${backendUrl}/presencas`)
     .then(response => res.json(response.data))
     .catch(err => {
       console.error(err);
-      res.status(500).send('Erro ao buscar faltas');
+      res.status(500).send('Erro ao buscar presenças');
+    });
+});
+
+// Rota para buscar presenças e faltas filtradas
+app.get('/filterPresencas', (req, res) => {
+  const filters = req.query;
+  axios.get(`${backendUrl}/filterPresencas`, { params: filters })
+    .then(response => res.json(response.data))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao buscar relatórios');
     });
 });
 
