@@ -1,5 +1,3 @@
-// app.js
-
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -105,6 +103,18 @@ app.delete('/presencas/:id', (req, res) => {
     .catch(err => {
       console.error(err);
       res.status(500).send('Erro ao remover presença');
+    });
+});
+
+// Rota para atualizar a presença de um aluno
+app.put('/presencas/:id', (req, res) => {
+  const id = req.params.id;
+  const { presente } = req.body;
+  axios.put(`${backendUrl}/presencas/${id}`, { presente })
+    .then(() => res.send('Presença atualizada'))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Erro ao atualizar presença');
     });
 });
 
