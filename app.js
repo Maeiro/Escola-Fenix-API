@@ -71,7 +71,10 @@ app.post('/registroPresenca', (req, res) => {
 
 // Rota para buscar presenças dos alunos
 app.get('/presencas', (req, res) => {
-  axios.get(`${backendUrl}/presencas`)
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
+
+  axios.get(`${backendUrl}/presencas?page=${page}&limit=${limit}`)
     .then(response => res.json(response.data))
     .catch(err => {
       console.error(err);
